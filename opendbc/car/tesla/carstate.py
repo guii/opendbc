@@ -108,16 +108,16 @@ class CarState(CarStateBase):
     ret.stockLkas = cp_ap_party.vl["DAS_steeringControl"]["DAS_steeringControlType"] == 2  # LANE_KEEP_ASSIST
 
     # Stock Autosteer should be off (includes FSD)
-    #if self.CP.carFingerprint in (CAR.TESLA_MODEL_3, CAR.TESLA_MODEL_Y):
+    if self.CP.carFingerprint in (CAR.TESLA_MODEL_3, CAR.TESLA_MODEL_Y):
       # Check if DAS_settings message exists (newer hardware)
-    #  if "DAS_settings" in cp_ap_party.vl:
-    #    ret.invalidLkasSetting = cp_ap_party.vl["DAS_settings"]["DAS_autosteerEnabled"] != 0
-    #  else:
+      if "DAS_settings" in cp_ap_party.vl:
+        ret.invalidLkasSetting = cp_ap_party.vl["DAS_settings"]["DAS_autosteerEnabled"] != 0
+      else:
         # For older hardware (HW 2.5), skip this check as the message doesn't exist
         # Similar to Model X handling - no reliable autosteer detection available
-    #    ret.invalidLkasSetting = False
-    #else:
-    #  pass
+        ret.invalidLkasSetting = False
+    else:
+      pass
     # Buttons # ToDo: add Gap adjust button
 
     # Messages needed by carcontroller
